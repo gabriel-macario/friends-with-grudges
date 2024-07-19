@@ -6,6 +6,8 @@ interface LetterBoxProps {
 }
 
 const LetterBoxStyles: CSSProperties = {
+    width: "3rem",
+    height: "3rem",
     border: "2px solid grey",
 }
 

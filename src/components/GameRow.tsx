@@ -1,4 +1,5 @@
 import React, { CSSProperties } from 'react';
+import LetterBox from "./LetterBox";
 
 interface GameRowProps {
     children?: React.ReactNode;
@@ -11,11 +12,17 @@ const GameRowStyles: CSSProperties = {
 };
 
 const GameRow: React.FC<GameRowProps> = ({ children }: GameRowProps) => {
+    let boxes = [];
+
+    for (let i = 0; i < 5; i++) {
+        boxes.push(<LetterBox/>);
+    }
+
     return (
         <div
             style={GameRowStyles}
         >
-            {children}
+            {boxes}
         </div>
     )
 }
