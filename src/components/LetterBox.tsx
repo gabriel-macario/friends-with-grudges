@@ -1,17 +1,30 @@
-import  { CSSProperties } from "react";
+import { CSSProperties } from "react";
+import LetterStatus from "../enums/LetterStatus";
 
 interface LetterBoxProps {
     letter?: string;
-    styling?: CSSStyleSheet
+    styling?: CSSStyleSheet,
+    letterStatus?: LetterStatus
 }
 
-const LetterBoxStyles: CSSProperties = {
-    width: "3rem",
-    height: "3rem",
-    border: "2px solid grey",
-}
+const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus }: LetterBoxProps) => {
 
-const LetterBox: React.FC<LetterBoxProps> = ({ letter }: LetterBoxProps ) => {
+
+    let LetterBoxStyles: CSSProperties = {
+        border: "2px solid grey",
+        marginBottom: "0.2em",
+        fontSize: "2.5rem",
+        height: "3rem",
+        textAlign: "center",
+        width: "3rem",
+    }
+
+    if (letterStatus === LetterStatus.exact) {
+        LetterBoxStyles.backgroundColor = "green";
+    } else if (letterStatus === LetterStatus.contains) {
+        LetterBoxStyles.backgroundColor = "yellow";
+    }
+
     return <div
         style={LetterBoxStyles}
     >
