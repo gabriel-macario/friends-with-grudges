@@ -1,34 +1,40 @@
-import  React, { CSSProperties } from "react";
+import  React, { CSSProperties, useContext } from "react";
 import GameRow from "./GameRow";
+import { AnswerContext } from "../contexts/GameState"
 
 interface GameBoardProps {
-    gameFinished: boolean;
+    gameFinished?: boolean;
 }
 const GameBoardStyles: CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    display: "flex",
     flexFlow: "row wrap",
     flexGrow: 1,
-    overflow: "hidden"
+    justifyContent: "center",
+    margin: "auto",
+    overflow: "hidden",
+    width: "50%",
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({ gameFinished = false }: GameBoardProps  ) => {
-    const numRows = 5;
+const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
+    const answer = useContext(AnswerContext);
 
-    let rows = [];
+    const currentWords = [
+        "earth",
+        "story",
+        "adieu",
+        "flops",
+        "quits",
+        "tests"
+    ]
 
-    for (let i = 0; i < numRows; i++ ) {
-        rows.push(
-            <GameRow>
-                <div>{`Row${i}`}</div>
-            </GameRow>
-        )
-    }
+    let gameRows = currentWords.map(word => <GameRow word={word.toUpperCase()} />)
+
     return <div
         style={GameBoardStyles}
     >
-        {rows}
+        {gameRows}
+        <div>{`The correct word is "${answer}"`}</div>
     </div>
 }
 
