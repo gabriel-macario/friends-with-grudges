@@ -3,6 +3,7 @@ import LetterBox from "./LetterBox";
 
 interface GameRowProps {
     children?: React.ReactNode;
+    word?: string
 }
 
 const GameRowStyles: CSSProperties = {
@@ -11,10 +12,13 @@ const GameRowStyles: CSSProperties = {
     justifyContent: "space-evenly"
 };
 
-const GameRow: React.FC<GameRowProps> = ({ children }: GameRowProps) => {
+const GameRow: React.FC<GameRowProps> = ({ children, word = '' }: GameRowProps) => {
     let boxes = [];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < word.length; i++ ) {
+        boxes.push(<LetterBox letter={word[i]} />)
+    }
+    for (let i = word.length; i < 5; i++) {
         boxes.push(<LetterBox/>);
     }
 
