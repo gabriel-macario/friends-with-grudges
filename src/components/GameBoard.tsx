@@ -21,7 +21,7 @@ const GameBoardStyles: CSSProperties = {
     justifyContent: "center",
     margin: "auto",
     overflow: "hidden",
-    width: "50%",
+    width: "300px",
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
