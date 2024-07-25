@@ -1,28 +1,33 @@
 import words from "./words.json";
 
-type TrieNodeChildren = {
-    [key: string]: TrieNode
+interface ITrieNodeChildren {
+    [key: string]: TrieNode;
 }
 
-interface TrieNode {
-    children: TrieNodeChildren,
+interface ITrieNode {
+    children: ITrieNodeChildren,
     isEndOfWord: boolean
 }
 
-class TrieNode {
+class TrieNode implements ITrieNode{
+    children: ITrieNodeChildren;
+    isEndOfWord: boolean;
+
     constructor() {
         this.children = {};
         this.isEndOfWord = false;
     }
 }
 
-interface Trie {
+interface ITrie {
     root: TrieNode;
     insert(word: string): void;
     search (word: string): boolean;
 }
 
-class Trie {
+class Trie implements ITrie {
+    root: TrieNode;
+    
     constructor() {
         this.root = new TrieNode();
     }
