@@ -7,10 +7,6 @@ import WordStore from "../data/WordStore.ts";
 const answerLength = 5;
 const numTries = 6;
 
-interface GameBoardProps {
-    gameFinished?: boolean;
-}
-
 interface GameBoardState {
     currentRow: number;
     currentString: string;
@@ -29,7 +25,7 @@ const GameBoardStyles: CSSProperties = {
     width: "300px",
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
+const GameBoard: React.FC = () => {
     const answer = useContext(AnswerContext);
 
     const [boardState, setBoardState] = useState<GameBoardState>({
