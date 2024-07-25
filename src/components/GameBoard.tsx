@@ -4,14 +4,18 @@ import { AnswerContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
 import WordStore from "../data/WordStore.ts";
 
+const answerLength = 5;
+const numTries = 6;
+
 interface GameBoardProps {
     gameFinished?: boolean;
 }
 
 interface GameBoardState {
-    currentRow: number,
-    currentString: string,
-    currentWords: Array<string>
+    currentRow: number;
+    currentString: string;
+    currentWords: Array<string>;
+    gameFinished: boolean;
 }
 
 const GameBoardStyles: CSSProperties = {
@@ -26,11 +30,26 @@ const GameBoardStyles: CSSProperties = {
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
+    const answer = useContext(AnswerContext);
+
     const [boardState, setBoardState] = useState<GameBoardState>({
         currentRow: 0,
         currentString: "",
-        currentWords: Array(5).fill("")
+        currentWords: Array(numTries).fill(""),
+        gameFinished: false
     });
+
+    function submissionIsValid(word: string): boolean {
+        return word.length === answerLength && WordStore.search(word);
+    }
+
+    function submissionIsCorrect(word: string): boolean {
+        return submissionIsValid(word) && word === answer;
+    }
+
+    function submissionIsLast(word: string) {
+        return submissionIsValid(word) && boardState.currentRow >= numTries - 1;
+    }
 
     function handleLetterPress(e: KeyboardEvent) {
         const {
@@ -47,7 +66,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
             let newBoardState: GameBoardState = {
                 currentRow,
                 currentString: newString,
-                currentWords: newWords
+                currentWords: newWords,
+                gameFinished: false,
             }
 
             setBoardState(newBoardState)
@@ -70,6 +90,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
             currentRow,
             currentString: newString,
             currentWords: newWords,
+            gameFinished: false
         }
 
         setBoardState(newBoardState);
@@ -82,12 +103,33 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
             currentWords
         } = boardState;
 
-        if (currentString.length === 5 && WordStore.search(currentString)) {
+        // CH
+
+        if (submissionIsCorrect(currentString.toUpperCase())) {
+            
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
-                currentWords
-            })
+                currentWords,
+                gameFinished: true
+            });
+            alert(`You won! The solution was ${answer}`)
+        } else if (submissionIsLast(currentString.toUpperCase())) {
+            setBoardState({
+                currentRow: currentRow + 1,
+                currentString: "",
+                currentWords,
+                gameFinished: true
+            });
+            alert(`You lost. The solution was ${answer}`)
+            console.log("SUBMISSION IS LAST");
+        } else if (submissionIsValid(currentString)) {
+            setBoardState({
+                currentRow: currentRow + 1,
+                currentString: "",
+                currentWords,
+                gameFinished: false
+            });
         } else if (currentString.length === 5) {
             alert(`${currentString} is not a word.`)
         }
@@ -104,6 +146,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
             }
         }
 
+        if (!boardState.gameFinished)
         document.addEventListener('keydown', handleKeyDown)
 
         return function cleanup() {
@@ -111,15 +154,12 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
         }
     })
 
-    const answer = useContext(AnswerContext);
-
     let gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
 
     return <div
         style={GameBoardStyles}
     >
         {gameRows}
-        <div>{`The correct word is ${answer}`}</div>
     </div>
 }
 
