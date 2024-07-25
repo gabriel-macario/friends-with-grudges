@@ -1,7 +1,11 @@
 import words from "./words.json";
 
+type TrieNodeChildren = {
+    [key: string]: TrieNode
+}
+
 interface TrieNode {
-    children: Object,
+    children: TrieNodeChildren,
     isEndOfWord: boolean
 }
 
@@ -23,7 +27,7 @@ class Trie {
         this.root = new TrieNode();
     }
 
-    insert(word) {
+    insert(word: string) {
         let node = this.root;
 
         for (let i = 0; i < word.length; i++) {
@@ -38,11 +42,11 @@ class Trie {
         node.isEndOfWord = true;
     }
 
-    search(word) {
+    search(word: string) {
         let node = this.root;
 
         for (let i = 0; i < word.length; i++) {
-            let char = word[i];
+            let char = word[i].toLowerCase();
 
             if (!node.children[char]) {
                 return false;
