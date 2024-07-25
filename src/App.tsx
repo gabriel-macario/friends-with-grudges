@@ -20,8 +20,8 @@ const App: React.FC = () => {
         <div>
           <h1 style={{
             textAlign: "center",
-            fontFamily: "monospace"
-          }}>Wordle Clone</h1>
+            fontFamily: "sans-serif"
+          }}>WORD GUESSER</h1>
           <GameBoard gameFinished={false} />
         </div>
       </AnswerMapContext.Provider>
