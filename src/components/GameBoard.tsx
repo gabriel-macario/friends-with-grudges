@@ -56,12 +56,58 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
         }
     }
 
+    function handleBackspace(e: KeyboardEvent) {
+        console.log("backspace pressed");
+        
+        const {
+            currentRow,
+            currentString,
+            currentWords
+        } = boardState;
+
+        let newString: string = currentString.slice(0, currentString.length - 1);
+        
+        let newWords: Array<string> = [...currentWords];
+        newWords[currentRow] = newString;
+
+        let newBoardState: GameBoardState = {
+            currentRow,
+            currentString: newString,
+            currentWords: newWords,
+        }
+
+        setBoardState(newBoardState);
+    }
+
+    function handleEnterPress() {
+        console.log("ENTER PRESSED");
+        
+        const {
+            currentRow,
+            currentString,
+            currentWords
+        } = boardState;
+        
+        if (currentString.length === 5) {
+            console.log("string valid for checking")
+            setBoardState({
+                currentRow: currentRow + 1,
+                currentString: "",
+                currentWords
+            })
+        } else {
+            console.log("string invalid");
+        }
+    }
+
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
             if (isLetter(e)) {
                 handleLetterPress(e)
             } else if (isEnter(e)) {
-                console.log("ENTER PRESSED");
+                handleEnterPress();
+            } else if (e.key === `Backspace`) {
+                handleBackspace(e);
             }
         }
 
@@ -74,7 +120,7 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
 
     const answer = useContext(AnswerContext);
 
-    let gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} word={word.toUpperCase()} />)
+    let gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
 
     return <div
         style={GameBoardStyles}

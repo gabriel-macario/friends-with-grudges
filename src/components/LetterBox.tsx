@@ -4,10 +4,11 @@ import LetterStatus from "../enums/LetterStatus";
 interface LetterBoxProps {
     letter?: string;
     styling?: CSSStyleSheet,
-    letterStatus?: LetterStatus
+    letterStatus?: LetterStatus,
+    checked: boolean
 }
 
-const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus }: LetterBoxProps) => {
+const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus, checked = false }: LetterBoxProps) => {
 
 
     let LetterBoxStyles: CSSProperties = {
@@ -19,9 +20,9 @@ const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus }: LetterBox
         width: "3rem",
     }
 
-    if (letterStatus === LetterStatus.exact) {
+    if (letterStatus === LetterStatus.exact && checked) {
         LetterBoxStyles.backgroundColor = "green";
-    } else if (letterStatus === LetterStatus.contains) {
+    } else if (letterStatus === LetterStatus.contains && checked) {
         LetterBoxStyles.backgroundColor = "yellow";
     }
 

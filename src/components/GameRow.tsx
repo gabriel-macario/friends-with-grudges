@@ -5,7 +5,8 @@ import LetterStatus from '../enums/LetterStatus';
 
 interface GameRowProps {
     children?: React.ReactNode;
-    word?: string
+    word?: string;
+    checked: boolean;
 }
 
 const GameRowStyles: CSSProperties = {
@@ -14,7 +15,7 @@ const GameRowStyles: CSSProperties = {
     justifyContent: "space-between"
 };
 
-const GameRow: React.FC<GameRowProps> = ({ word = '' }: GameRowProps) => {
+const GameRow: React.FC<GameRowProps> = ({ word = '', checked = false }: GameRowProps) => {
     const answerMap = useContext(AnswerMapContext);
     const answer = useContext(AnswerContext);
     
@@ -36,11 +37,12 @@ const GameRow: React.FC<GameRowProps> = ({ word = '' }: GameRowProps) => {
                 letter={word[i]}
                 letterStatus={status}
                 key={i}
+                checked={checked}
             />
         )
     }
     for (let i = word.length; i < 5; i++) {
-        boxes.push(<LetterBox key={i}/>);
+        boxes.push(<LetterBox checked={false} key={i}/>);
     }
 
     return (
