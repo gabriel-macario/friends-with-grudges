@@ -23,7 +23,7 @@ const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus, checked = f
         borderColor = backgroundColor;
     }
 
-    let LetterBoxStyles: CSSProperties = {
+    const LetterBoxStyles: CSSProperties = {
         backgroundColor,
         border: `2px solid ${borderColor}`,
         color,

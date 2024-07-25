@@ -31,7 +31,7 @@ class Trie {
         let node = this.root;
 
         for (let i = 0; i < word.length; i++) {
-            let char = word[i];
+            const char = word[i];
 
             if (!node.children[char]) {
                 node.children[char] = new TrieNode();
@@ -46,7 +46,7 @@ class Trie {
         let node = this.root;
 
         for (let i = 0; i < word.length; i++) {
-            let char = word[i].toLowerCase();
+            const char = word[i].toLowerCase();
 
             if (!node.children[char]) {
                 return false;

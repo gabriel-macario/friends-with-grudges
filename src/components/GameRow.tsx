@@ -19,7 +19,7 @@ const GameRow: React.FC<GameRowProps> = ({ word = '', checked = false }: GameRow
     const answerMap = useContext(AnswerMapContext);
     const answer = useContext(AnswerContext);
     
-    let boxes = [];
+    const boxes = [];
 
     for (let i = 0; i < word.length && i < 5; i++) {
         let status: LetterStatus;

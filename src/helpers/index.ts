@@ -1,7 +1,7 @@
-export function isLetter(e: KeyboardEvent): Boolean {
+export function isLetter(e: KeyboardEvent): boolean {
     return e.code === `Key${e.key.toUpperCase()}`;
 }
 
-export function isEnter(e: KeyboardEvent): Boolean {
+export function isEnter(e: KeyboardEvent): boolean {
     return e.key === `Enter`;
 }
