@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import GameBoard from "./components/GameBoard";
 import { AnswerContext, AnswerMapContext } from "./contexts/GameState";
+import words from "./data/words.json";
 
 const App: React.FC = () => {
   // let [answer, setAnswer] = useState("");
-  let answer = "tests".toUpperCase();
+  let answerIndex = Math.floor(Math.random() * words.length);
+  let answer = words[answerIndex].toUpperCase();
   let answerMap = new Map();
 
   useEffect(() => {
@@ -17,7 +19,8 @@ const App: React.FC = () => {
       <AnswerMapContext.Provider value={answerMap}>
         <div>
           <h1 style={{
-            textAlign: "center"
+            textAlign: "center",
+            fontFamily: "monospace"
           }}>Wordle Clone</h1>
           <GameBoard gameFinished={false} />
         </div>
