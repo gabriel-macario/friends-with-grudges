@@ -1,7 +1,7 @@
 import  React, { CSSProperties, useContext, useEffect, useState } from "react";
 import GameRow from "./GameRow";
 import { AnswerContext } from "../contexts/GameState"
-import { isLetter } from "../helpers"
+import { isEnter, isLetter } from "../helpers"
 
 interface GameBoardProps {
     gameFinished?: boolean;
@@ -60,6 +60,8 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
         function handleKeyDown(e: KeyboardEvent) {
             if (isLetter(e)) {
                 handleLetterPress(e)
+            } else if (isEnter(e)) {
+                console.log("ENTER PRESSED");
             }
         }
 
