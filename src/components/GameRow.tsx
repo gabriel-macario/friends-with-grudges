@@ -20,7 +20,7 @@ const GameRow: React.FC<GameRowProps> = ({ word = '' }: GameRowProps) => {
     
     let boxes = [];
 
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < word.length && i < 5; i++) {
         let status: LetterStatus;
 
         if (word[i] === answer[i]) {
@@ -35,11 +35,12 @@ const GameRow: React.FC<GameRowProps> = ({ word = '' }: GameRowProps) => {
             <LetterBox
                 letter={word[i]}
                 letterStatus={status}
+                key={i}
             />
         )
     }
     for (let i = word.length; i < 5; i++) {
-        boxes.push(<LetterBox />);
+        boxes.push(<LetterBox key={i}/>);
     }
 
     return (
