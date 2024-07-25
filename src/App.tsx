@@ -17,7 +17,7 @@ const App: React.FC = () => {
             textAlign: "center",
             fontFamily: "sans-serif"
           }}>WORD GUESSER</h1>
-          <GameBoard gameFinished={false} />
+          <GameBoard />
         </div>
       </AnswerMapContext.Provider>
     </AnswerContext.Provider >
