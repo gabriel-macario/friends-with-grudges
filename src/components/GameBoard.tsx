@@ -55,11 +55,11 @@ const GameBoard: React.FC = () => {
         } = boardState;
 
         if (currentString.length < 5) {
-            let newString: string = currentString + e.key;
-            let newWords: Array<string> = [...currentWords];
+            const newString: string = currentString + e.key;
+            const newWords: Array<string> = [...currentWords];
             newWords[currentRow] = newString;
 
-            let newBoardState: GameBoardState = {
+            const newBoardState: GameBoardState = {
                 currentRow,
                 currentString: newString,
                 currentWords: newWords,
@@ -77,12 +77,12 @@ const GameBoard: React.FC = () => {
             currentWords
         } = boardState;
 
-        let newString: string = currentString.slice(0, currentString.length - 1);
+        const newString: string = currentString.slice(0, currentString.length - 1);
 
-        let newWords: Array<string> = [...currentWords];
+        const newWords: Array<string> = [...currentWords];
         newWords[currentRow] = newString;
 
-        let newBoardState: GameBoardState = {
+        const newBoardState: GameBoardState = {
             currentRow,
             currentString: newString,
             currentWords: newWords,
@@ -150,7 +150,7 @@ const GameBoard: React.FC = () => {
         }
     })
 
-    let gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
+    const gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
 
     return <div
         style={GameBoardStyles}
