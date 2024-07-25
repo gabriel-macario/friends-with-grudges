@@ -34,18 +34,6 @@ const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus, checked = f
         textAlign: "center",
         width: "3rem",
     }
-    // if (letterStatus === LetterStatus.exact && checked) {
-    //     LetterBoxStyles.backgroundColor = "#6aaa64";
-    //     LetterBoxStyles.color = "#fff";
-    // } else if (letterStatus === LetterStatus.contains && checked) {
-    //     LetterBoxStyles.backgroundColor = "#c9b458";
-    //     LetterBoxStyles.color = "#fff";
-    // } else if (letterStatus === LetterStatus.incorrect && checked) {
-    //     LetterBoxStyles.backgroundColor = "#787C7E";
-    //     LetterBoxStyles.color = "#fff";
-    // }
-
-
 
     return <div
         style={LetterBoxStyles}
