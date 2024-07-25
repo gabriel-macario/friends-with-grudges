@@ -74,7 +74,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
         }
     }
 
-    function handleBackspace(e: KeyboardEvent) {
+    function handleBackspace() {
         const {
             currentRow,
             currentString,
@@ -142,7 +142,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
             } else if (isEnter(e)) {
                 handleEnterPress();
             } else if (e.key === `Backspace`) {
-                handleBackspace(e);
+                handleBackspace();
             }
         }
 

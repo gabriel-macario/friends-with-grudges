@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GameBoard from "./components/GameBoard";
 import { AnswerContext, AnswerMapContext } from "./contexts/GameState";
 import words from "./data/words.json";
