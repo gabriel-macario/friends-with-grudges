@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 
-interface KeyboardButtonProps {
+export interface KeyboardButtonProps {
     key: string;
     keyStatus?: string;
 };
