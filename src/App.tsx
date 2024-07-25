@@ -1,18 +1,13 @@
-import { useEffect } from "react";
 import GameBoard from "./components/GameBoard";
 import { AnswerContext, AnswerMapContext } from "./contexts/GameState";
 import words from "./data/words.json";
 
 const App: React.FC = () => {
-  // let [answer, setAnswer] = useState("");
-  let answerIndex = Math.floor(Math.random() * words.length);
-  let answer = words[answerIndex].toUpperCase();
-  let answerMap = new Map();
-
-  useEffect(() => {
-    let answerChars = [...answer];
-    answerChars.forEach(char => answerMap.set(char, true));
-  }, [])
+  const answerIndex = Math.floor(Math.random() * words.length);
+  const answer = words[answerIndex].toUpperCase();
+  const answerMap = new Map();
+  const answerChars = [...answer];
+  answerChars.forEach(char => answerMap.set(char, true));
 
   return (
     <AnswerContext.Provider value={answer} >
