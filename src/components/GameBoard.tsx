@@ -1,7 +1,8 @@
-import  React, { CSSProperties, useContext, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import GameRow from "./GameRow";
 import { AnswerContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
+import WordStore from "../data/WordStore.ts";
 
 interface GameBoardProps {
     gameFinished?: boolean;
@@ -24,7 +25,7 @@ const GameBoardStyles: CSSProperties = {
     width: "300px",
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
+const GameBoard: React.FC<GameBoardProps> = ({ }: GameBoardProps) => {
     const [boardState, setBoardState] = useState<GameBoardState>({
         currentRow: 0,
         currentString: "",
@@ -39,9 +40,6 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
         } = boardState;
 
         if (currentString.length < 5) {
-            
-            console.log(e.key);
-            
             let newString: string = currentString + e.key;
             let newWords: Array<string> = [...currentWords];
             newWords[currentRow] = newString;
@@ -57,8 +55,6 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
     }
 
     function handleBackspace(e: KeyboardEvent) {
-        console.log("backspace pressed");
-        
         const {
             currentRow,
             currentString,
@@ -66,7 +62,7 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
         } = boardState;
 
         let newString: string = currentString.slice(0, currentString.length - 1);
-        
+
         let newWords: Array<string> = [...currentWords];
         newWords[currentRow] = newString;
 
@@ -80,23 +76,20 @@ const GameBoard: React.FC<GameBoardProps> = ({}: GameBoardProps  ) => {
     }
 
     function handleEnterPress() {
-        console.log("ENTER PRESSED");
-        
         const {
             currentRow,
             currentString,
             currentWords
         } = boardState;
-        
-        if (currentString.length === 5) {
-            console.log("string valid for checking")
+
+        if (currentString.length === 5 && WordStore.search(currentString)) {
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
                 currentWords
             })
-        } else {
-            console.log("string invalid");
+        } else if (currentString.length === 5) {
+            alert(`${currentString} is not a word.`)
         }
     }
 
