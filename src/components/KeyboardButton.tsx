@@ -3,7 +3,7 @@ import React, { CSSProperties } from "react";
 export interface KeyboardButtonProps {
     buttonString: string;
     keyStatus?: string;
-};
+}
 
 const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonString, keyStatus }: KeyboardButtonProps) => {
     let fontSize = "1em";

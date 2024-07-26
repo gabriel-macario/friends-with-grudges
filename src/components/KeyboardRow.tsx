@@ -5,7 +5,7 @@ interface KeyboardRowProps {
     rowString: Array<string>;
     rowIndex: number;
     keyStatuses?: Map<string, number>;
-};
+}
 
 const KeyboardRowStyles: React.FC<KeyboardRowProps> = ({ rowString, rowIndex, keyStatuses }: KeyboardRowProps) => {
     let justifyContent = "space-between";

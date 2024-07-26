@@ -3,7 +3,7 @@ import KeyboardRow from "./KeyboardRow";
 
 interface KeyboardProps {
     keyStatuses?: Map<string, number>;
-};
+}
 
 const Keyboard: React.FC<KeyboardProps> = ({ keyStatuses }: KeyboardProps) => {
     const rows = [
