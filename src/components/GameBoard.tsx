@@ -3,6 +3,7 @@ import GameRow from "./GameRow";
 import { AnswerContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
 import WordStore from "../data/WordStore.ts";
+import Keyboard from "./Keyboard.tsx";
 
 const answerLength = 5;
 const numTries = 6;
@@ -14,7 +15,7 @@ interface GameBoardState {
     gameFinished: boolean;
 }
 
-const GameBoardStyles: CSSProperties = {
+const GameRowsStyles: CSSProperties = {
     alignItems: "center",
     display: "flex",
     flexFlow: "row wrap",
@@ -102,7 +103,7 @@ const GameBoard: React.FC = () => {
         // CH
 
         if (submissionIsCorrect(currentString.toUpperCase())) {
-            
+
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
@@ -147,7 +148,7 @@ const GameBoard: React.FC = () => {
         }
 
         if (!boardState.gameFinished)
-        document.addEventListener('keydown', handleKeyDown)
+            document.addEventListener('keydown', handleKeyDown)
 
         return function cleanup() {
             document.removeEventListener('keydown', handleKeyDown);
@@ -156,11 +157,16 @@ const GameBoard: React.FC = () => {
 
     const gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
 
-    return <div
-        style={GameBoardStyles}
-    >
-        {gameRows}
-    </div>
+    return (
+        <div>
+            <div
+                style={GameRowsStyles}
+            >
+                {gameRows}
+            </div>
+            <Keyboard />
+        </div>
+    )
 }
 
 export default GameBoard;

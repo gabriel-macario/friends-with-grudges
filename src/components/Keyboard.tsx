@@ -15,7 +15,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ keyStatuses }: KeyboardProps) => {
     const KeyboardStyles: CSSProperties = {
         display: "flex",
         flexDirection: "column",
-        margin: "0 auto 8px",
+        margin: "10px auto 8px",
         width: "350px"
     }
 
