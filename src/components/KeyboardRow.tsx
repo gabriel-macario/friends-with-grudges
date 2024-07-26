@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import KeyboardButton, { KeyboardButtonProps } from "./KeyboardButton";
+import KeyboardButton from "./KeyboardButton";
 
 interface KeyboardRowProps {
     rowString: Array<string>;
