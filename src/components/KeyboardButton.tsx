@@ -38,7 +38,7 @@ const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonStr
             key = KeyCodes.backspace
         }
 
-        let event = new KeyboardEvent("keydown", {
+        const event = new KeyboardEvent("keydown", {
             code,
             key,
             bubbles: true
