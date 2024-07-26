@@ -1,26 +1,41 @@
 import React, { CSSProperties } from "react";
 import KeyCodes from "../enums/KeyCodes";
 import { defaultColors } from "../styles/colors";
+import KeyButtonStatuses from "../enums/KeyButtonStatuses";
 
 export interface KeyboardButtonProps {
     buttonString: string;
-    keyStatus?: string;
+    keyStatus?: KeyButtonStatuses;
 }
 
 const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonString, keyStatus }: KeyboardButtonProps) => {
     let fontSize = "1em";
     let width = "25px";
+    let backgroundColor = defaultColors.lightGrey;
+    let color = defaultColors.black;
 
     if (buttonString === "enter".toUpperCase()) {
         fontSize = "0.7em";
         width = "40px";
     }
 
+    if (keyStatus !== KeyButtonStatuses.unused) {
+        color = defaultColors.white
+    }
+
+    if (keyStatus === KeyButtonStatuses.correct) {
+        backgroundColor = defaultColors.green
+    } else if (keyStatus === KeyButtonStatuses.present) {
+        backgroundColor = defaultColors.yellow
+    } else if (keyStatus === KeyButtonStatuses.absent) {
+        backgroundColor = defaultColors.darkGrey
+    }
+
     const KeyboardButtonStyles: CSSProperties = {
-        backgroundColor: defaultColors.lightGrey,
+        backgroundColor,
         border: "none",
         borderRadius: "4px",
-        color: "black",
+        color,
         fontSize,
         height: "58px",
         padding: "0",
@@ -45,8 +60,6 @@ const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonStr
             bubbles: true
         })
 
-        console.log("dispatching event from button")
-        console.log(event)
         document.dispatchEvent(event)
     }
 

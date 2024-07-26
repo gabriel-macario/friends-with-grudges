@@ -1,9 +1,11 @@
 import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import GameRow from "./GameRow";
-import { AnswerContext } from "../contexts/GameState"
+import { AnswerContext, AnswerMapContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
 import WordStore from "../data/WordStore.ts";
 import Keyboard from "./Keyboard.tsx";
+import KeyButtonStatus from "../enums/KeyButtonStatuses.ts";
+import KeyButtonStatuses from "../enums/KeyButtonStatuses.ts";
 
 const answerLength = 5;
 const numTries = 6;
@@ -13,6 +15,7 @@ interface GameBoardState {
     currentString: string;
     currentWords: Array<string>;
     gameFinished: boolean;
+    keyButtonStatuses: Map<string, KeyButtonStatus>;
 }
 
 const GameRowsStyles: CSSProperties = {
@@ -28,12 +31,14 @@ const GameRowsStyles: CSSProperties = {
 
 const GameBoard: React.FC = () => {
     const answer = useContext(AnswerContext);
+    const answerMap = useContext(AnswerMapContext);
 
     const [boardState, setBoardState] = useState<GameBoardState>({
         currentRow: 0,
         currentString: "",
         currentWords: Array(numTries).fill(""),
-        gameFinished: false
+        gameFinished: false,
+        keyButtonStatuses: new Map()
     });
 
     function submissionIsValid(word: string): boolean {
@@ -48,11 +53,35 @@ const GameBoard: React.FC = () => {
         return submissionIsValid(word) && boardState.currentRow >= numTries - 1;
     }
 
+    function generateNewKeyButtonStatuses() {
+        const {
+            currentString,
+            keyButtonStatuses
+        } = boardState;
+
+        const newStatuses = new Map(keyButtonStatuses);
+
+        for (let i = 0; i < currentString.length; i++) {
+            const char = currentString[i].toUpperCase();
+
+            if (char === answer[i]) {
+                newStatuses.set(char, KeyButtonStatus.correct);
+            } else if (answerMap.get(char) && newStatuses.get(char) !== KeyButtonStatuses.correct) {
+                newStatuses.set(char, KeyButtonStatuses.present);
+            } else if (!answerMap.has(char)) {
+                newStatuses.set(char, KeyButtonStatus.absent)
+            }
+        }
+
+        return newStatuses
+    }
+
     function handleLetterPress(e: KeyboardEvent) {
         const {
             currentRow,
             currentString,
-            currentWords
+            currentWords,
+            keyButtonStatuses
         } = boardState;
 
         if (currentString.length < 5) {
@@ -65,6 +94,7 @@ const GameBoard: React.FC = () => {
                 currentString: newString,
                 currentWords: newWords,
                 gameFinished: false,
+                keyButtonStatuses
             }
 
             setBoardState(newBoardState)
@@ -75,7 +105,8 @@ const GameBoard: React.FC = () => {
         const {
             currentRow,
             currentString,
-            currentWords
+            currentWords,
+            keyButtonStatuses
         } = boardState;
 
         const newString: string = currentString.slice(0, currentString.length - 1);
@@ -87,7 +118,8 @@ const GameBoard: React.FC = () => {
             currentRow,
             currentString: newString,
             currentWords: newWords,
-            gameFinished: false
+            gameFinished: false,
+            keyButtonStatuses
         }
 
         setBoardState(newBoardState);
@@ -97,35 +129,42 @@ const GameBoard: React.FC = () => {
         const {
             currentRow,
             currentString,
-            currentWords
+            currentWords,
         } = boardState;
 
         // CH
 
         if (submissionIsCorrect(currentString.toUpperCase())) {
+            const newKeyButtonStatuses = generateNewKeyButtonStatuses();
 
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
                 currentWords,
+                keyButtonStatuses: newKeyButtonStatuses,
                 gameFinished: true
             });
             alert(`You won! The solution was ${answer}`)
         } else if (submissionIsLast(currentString.toUpperCase())) {
+            const newKeyButtonStatuses = generateNewKeyButtonStatuses();
+
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
                 currentWords,
-                gameFinished: true
+                gameFinished: true,
+                keyButtonStatuses: newKeyButtonStatuses
             });
             alert(`You lost. The solution was ${answer}`)
-            console.log("SUBMISSION IS LAST");
         } else if (submissionIsValid(currentString)) {
+            const newKeyButtonStatuses = generateNewKeyButtonStatuses();
+
             setBoardState({
                 currentRow: currentRow + 1,
                 currentString: "",
                 currentWords,
-                gameFinished: false
+                gameFinished: false,
+                keyButtonStatuses: newKeyButtonStatuses
             });
         } else if (currentString.length === 5) {
             alert(`${currentString} is not a word.`)
@@ -134,15 +173,11 @@ const GameBoard: React.FC = () => {
 
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
-            console.log("HANDLE KEY DOWN CALLED");
             if (isLetter(e)) {
-                console.log("IS LETTER")
                 handleLetterPress(e)
             } else if (isEnter(e)) {
-                console.log(e)
                 handleEnterPress();
             } else if (e.key === `Backspace`) {
-                console.log(e)
                 handleBackspace();
             }
         }
@@ -155,7 +190,11 @@ const GameBoard: React.FC = () => {
         }
     })
 
-    const gameRows = boardState.currentWords.map((word, i) => <GameRow key={`${i}`} checked={i < boardState.currentRow} word={word.toUpperCase()} />)
+    const gameRows = boardState.currentWords.map((word, i) => <GameRow
+        key={`${i}`}
+        checked={i < boardState.currentRow}
+        word={word.toUpperCase()}
+    />)
 
     return (
         <div>
@@ -164,7 +203,7 @@ const GameBoard: React.FC = () => {
             >
                 {gameRows}
             </div>
-            <Keyboard />
+            <Keyboard keyStatuses={boardState.keyButtonStatuses} />
         </div>
     )
 }
