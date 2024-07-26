@@ -1,24 +1,25 @@
 import { CSSProperties } from "react";
 import LetterStatus from "../enums/LetterStatus";
+import { defaultColors } from "../styles/colors";
 
 interface LetterBoxProps {
     letter?: string;
-    styling?: CSSStyleSheet,
-    letterStatus?: LetterStatus,
-    checked: boolean
+    styling?: CSSStyleSheet;
+    letterStatus?: LetterStatus;
+    checked: boolean;
 }
 
 const LetterBox: React.FC<LetterBoxProps> = ({ letter, letterStatus, checked = false }: LetterBoxProps) => {
-    let backgroundColor = "#fff";
-    let color = "#000";
-    let borderColor = "#787C7E";
+    let backgroundColor = defaultColors.white;
+    let color = defaultColors.black;
+    let borderColor = defaultColors.lightGrey;
 
     if (checked) {
-        color = "#fff";
+        color = defaultColors.white;
 
-        if (letterStatus === LetterStatus.exact) backgroundColor = "#6aaa64";
-        else if (letterStatus === LetterStatus.contains) backgroundColor = "#c9b458";
-        else backgroundColor = "#787C7E";
+        if (letterStatus === LetterStatus.exact) backgroundColor = defaultColors.green;
+        else if (letterStatus === LetterStatus.contains) backgroundColor = defaultColors.yellow;
+        else backgroundColor = defaultColors.darkGrey;
 
         borderColor = backgroundColor;
     }

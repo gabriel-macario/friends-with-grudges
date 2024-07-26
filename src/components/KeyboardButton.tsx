@@ -1,5 +1,6 @@
 import React, { CSSProperties } from "react";
 import KeyCodes from "../enums/KeyCodes";
+import { defaultColors } from "../styles/colors";
 
 export interface KeyboardButtonProps {
     buttonString: string;
@@ -16,7 +17,7 @@ const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonStr
     }
 
     const KeyboardButtonStyles: CSSProperties = {
-        backgroundColor: "#d3d6dA",
+        backgroundColor: defaultColors.lightGrey,
         border: "none",
         borderRadius: "4px",
         color: "black",
