@@ -1,6 +1,7 @@
 import GameBoard from "./components/GameBoard";
 import { AnswerContext, AnswerMapContext } from "./contexts/GameState";
 import words from "./data/words.json";
+import Keyboard from "./components/Keyboard";
 
 const App: React.FC = () => {
   const answerIndex = Math.floor(Math.random() * words.length);
@@ -18,6 +19,8 @@ const App: React.FC = () => {
             fontFamily: "sans-serif"
           }}>WORD GUESSER</h1>
           <GameBoard />
+
+          <Keyboard />
         </div>
       </AnswerMapContext.Provider>
     </AnswerContext.Provider >

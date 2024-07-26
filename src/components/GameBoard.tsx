@@ -22,7 +22,7 @@ const GameBoardStyles: CSSProperties = {
     justifyContent: "center",
     margin: "auto",
     overflow: "hidden",
-    width: "300px",
+    width: "320px",
 }
 
 const GameBoard: React.FC = () => {
