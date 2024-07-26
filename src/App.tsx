@@ -1,10 +1,10 @@
 import GameBoard from "./components/GameBoard";
 import { AnswerContext, AnswerMapContext } from "./contexts/GameState";
-import words from "./data/words.json";
+import answers from "./data/answers.json";
 
 const App: React.FC = () => {
-  const answerIndex = Math.floor(Math.random() * words.length);
-  const answer = words[answerIndex].toUpperCase();
+  const answerIndex = Math.floor(Math.random() * answers.length);
+  const answer = answers[answerIndex].toUpperCase();
   const answerMap = new Map();
   const answerChars = [...answer];
   answerChars.forEach(char => answerMap.set(char, true));

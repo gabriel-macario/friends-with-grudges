@@ -1,4 +1,4 @@
-import words from "./words.json";
+import guesses from "./guesses.json";
 
 interface ITrieNodeChildren {
     [key: string]: TrieNode;
@@ -66,6 +66,6 @@ class Trie implements ITrie {
 
 const WordStore = new Trie();
 
-words.forEach(word => WordStore.insert(word));
+guesses.forEach(word => WordStore.insert(word));
 
 export default WordStore;
