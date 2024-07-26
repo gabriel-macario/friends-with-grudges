@@ -3,5 +3,5 @@ export function isLetter(e: KeyboardEvent): boolean {
 }
 
 export function isEnter(e: KeyboardEvent): boolean {
-    return e.key === `Enter`;
+    return e.code === `Enter`;
 }
