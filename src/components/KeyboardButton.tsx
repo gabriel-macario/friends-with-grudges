@@ -1,4 +1,5 @@
 import React, { CSSProperties } from "react";
+import KeyCodes from "../enums/KeyCodes";
 
 export interface KeyboardButtonProps {
     buttonString: string;
@@ -25,8 +26,32 @@ const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonStr
         width,
     }
 
+    const onClickHandler = () => {
+        let code = `Key${buttonString.toUpperCase()}`;
+        let key = buttonString.toLowerCase();
+
+        if (buttonString.toUpperCase() === `ENTER`) {
+            code = KeyCodes.enter
+            key = KeyCodes.enter
+        } else if (buttonString === "<") {
+            code = KeyCodes.backspace
+            key = KeyCodes.backspace
+        }
+
+        let event = new KeyboardEvent("keydown", {
+            code,
+            key,
+            bubbles: true
+        })
+
+        console.log("dispatching event from button")
+        console.log(event)
+        document.dispatchEvent(event)
+    }
+
     return <button
         style={KeyboardButtonStyles}
+        onClick={onClickHandler}
     >
         {buttonString.toUpperCase()}
     </button>

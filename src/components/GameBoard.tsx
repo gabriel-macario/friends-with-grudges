@@ -133,11 +133,15 @@ const GameBoard: React.FC = () => {
 
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
+            console.log("HANDLE KEY DOWN CALLED");
             if (isLetter(e)) {
+                console.log("IS LETTER")
                 handleLetterPress(e)
             } else if (isEnter(e)) {
+                console.log(e)
                 handleEnterPress();
             } else if (e.key === `Backspace`) {
+                console.log(e)
                 handleBackspace();
             }
         }
