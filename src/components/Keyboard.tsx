@@ -1,9 +1,9 @@
 import React, { CSSProperties } from "react";
 import KeyboardRow from "./KeyboardRow";
-import KeyButtonStatuses from "../enums/KeyButtonStatuses";
+import { KeyButtonStatusEnum } from "../enums/KeyButtonStatuses";
 
 interface KeyboardProps {
-    keyStatuses: Map<string, KeyButtonStatuses>;
+    keyStatuses: Map<string, KeyButtonStatusEnum>;
 }
 
 const Keyboard: React.FC<KeyboardProps> = ({ keyStatuses }: KeyboardProps) => {

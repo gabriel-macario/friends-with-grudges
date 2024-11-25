@@ -4,8 +4,8 @@ import { AnswerContext, AnswerMapContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
 import WordStore from "../data/WordStore.ts";
 import Keyboard from "./Keyboard.tsx";
-import KeyButtonStatus from "../enums/KeyButtonStatuses.ts";
-import KeyButtonStatuses from "../enums/KeyButtonStatuses.ts";
+// import KeyButtonStatus from "../enums/KeyButtonStatuses.ts";
+import { KeyButtonStatusEnum } from "../enums/KeyButtonStatuses.ts";
 
 const answerLength = 5;
 const numTries = 6;
@@ -15,7 +15,7 @@ interface GameBoardState {
     currentString: string;
     currentWords: Array<string>;
     gameFinished: boolean;
-    keyButtonStatuses: Map<string, KeyButtonStatus>;
+    keyButtonStatuses: Map<string, KeyButtonStatusEnum>;
 }
 
 const GameRowsStyles: CSSProperties = {
@@ -65,11 +65,11 @@ const GameBoard: React.FC = () => {
             const char = currentString[i].toUpperCase();
 
             if (char === answer[i]) {
-                newStatuses.set(char, KeyButtonStatus.correct);
-            } else if (answerMap.get(char) && newStatuses.get(char) !== KeyButtonStatuses.correct) {
-                newStatuses.set(char, KeyButtonStatuses.present);
+                newStatuses.set(char, KeyButtonStatusEnum.CORRECT);
+            } else if (answerMap.get(char) && newStatuses.get(char) !== KeyButtonStatusEnum.CORRECT) {
+                newStatuses.set(char, KeyButtonStatusEnum.PRESENT);
             } else if (!answerMap.has(char)) {
-                newStatuses.set(char, KeyButtonStatus.absent)
+                newStatuses.set(char, KeyButtonStatusEnum.ABSENT)
             }
         }
 

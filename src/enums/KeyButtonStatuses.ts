@@ -1,8 +1,6 @@
-enum KeyButtonStatuses {
-    unused,
-    absent,
-    present,
-    correct
+export enum KeyButtonStatusEnum {
+    UNUSED,
+    ABSENT,
+    PRESENT,
+    CORRECT
 }
-
-export default KeyButtonStatuses
