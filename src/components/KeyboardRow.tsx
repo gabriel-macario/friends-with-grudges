@@ -1,11 +1,11 @@
 import React, { CSSProperties } from "react";
 import KeyboardButton from "./KeyboardButton";
-import KeyButtonStatuses from "../enums/KeyButtonStatuses";
+import { KeyButtonStatusEnum} from "../enums/KeyButtonStatuses";
 
 interface KeyboardRowProps {
     rowString: Array<string>;
     rowIndex: number;
-    keyStatuses: Map<string, KeyButtonStatuses>;
+    keyStatuses: Map<string, KeyButtonStatusEnum>;
 }
 
 const KeyboardRowStyles: React.FC<KeyboardRowProps> = ({ rowString, rowIndex, keyStatuses }: KeyboardRowProps) => {
@@ -25,7 +25,7 @@ const KeyboardRowStyles: React.FC<KeyboardRowProps> = ({ rowString, rowIndex, ke
     }
 
     const keyboardButtons = rowString.map((button, i) => {
-        const keyStatus = keyStatuses.has(button) ? keyStatuses.get(button) : KeyButtonStatuses.unused;
+        const keyStatus = keyStatuses.has(button) ? keyStatuses.get(button) : KeyButtonStatusEnum.UNUSED;
         return <KeyboardButton buttonString={button} key={i} keyStatus={keyStatus} />
     })
 

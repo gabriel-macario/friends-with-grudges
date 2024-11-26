@@ -1,11 +1,11 @@
 import React, { CSSProperties } from "react";
 import KeyCodes from "../enums/KeyCodes";
 import { defaultColors } from "../styles/colors";
-import KeyButtonStatuses from "../enums/KeyButtonStatuses";
+import { KeyButtonStatusEnum} from "../enums/KeyButtonStatuses";
 
 export interface KeyboardButtonProps {
     buttonString: string;
-    keyStatus?: KeyButtonStatuses;
+    keyStatus?: KeyButtonStatusEnum;
 }
 
 const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonString, keyStatus }: KeyboardButtonProps) => {
@@ -19,15 +19,15 @@ const KeyboardButton: React.FC<KeyboardButtonProps> = ({ buttonString: buttonStr
         width = "40px";
     }
 
-    if (keyStatus !== KeyButtonStatuses.unused) {
+    if (keyStatus !== KeyButtonStatusEnum.UNUSED) {
         color = defaultColors.white
     }
 
-    if (keyStatus === KeyButtonStatuses.correct) {
+    if (keyStatus === KeyButtonStatusEnum.CORRECT) {
         backgroundColor = defaultColors.green
-    } else if (keyStatus === KeyButtonStatuses.present) {
+    } else if (keyStatus === KeyButtonStatusEnum.PRESENT) {
         backgroundColor = defaultColors.yellow
-    } else if (keyStatus === KeyButtonStatuses.absent) {
+    } else if (keyStatus === KeyButtonStatusEnum.ABSENT) {
         backgroundColor = defaultColors.darkGrey
     }
 
