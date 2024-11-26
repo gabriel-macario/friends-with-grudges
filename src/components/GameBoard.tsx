@@ -2,21 +2,10 @@ import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import GameRow from "./GameRow";
 import { AnswerContext, AnswerMapContext } from "../contexts/GameState"
 import { isEnter, isLetter } from "../helpers"
-import WordStore from "../data/WordStore.ts";
 import Keyboard from "./Keyboard.tsx";
-// import KeyButtonStatus from "../enums/KeyButtonStatuses.ts";
 import { KeyButtonStatusEnum } from "../enums/KeyButtonStatuses.ts";
-
-const answerLength = 5;
-const numTries = 6;
-
-interface GameBoardState {
-    currentRow: number;
-    currentString: string;
-    currentWords: Array<string>;
-    gameFinished: boolean;
-    keyButtonStatuses: Map<string, KeyButtonStatusEnum>;
-}
+import { useGameStateStore } from "../stores/gameState.ts";
+import { submissionIsCorrect, submissionIsLast, submissionIsValid } from "../helpers/submission.ts";
 
 const GameRowsStyles: CSSProperties = {
     alignItems: "center",
@@ -33,31 +22,18 @@ const GameBoard: React.FC = () => {
     const answer = useContext(AnswerContext);
     const answerMap = useContext(AnswerMapContext);
 
-    const [boardState, setBoardState] = useState<GameBoardState>({
-        currentRow: 0,
-        currentString: "",
-        currentWords: Array(numTries).fill(""),
-        gameFinished: false,
-        keyButtonStatuses: new Map()
-    });
-
-    function submissionIsValid(word: string): boolean {
-        return word.length === answerLength && WordStore.search(word);
-    }
-
-    function submissionIsCorrect(word: string): boolean {
-        return submissionIsValid(word) && word === answer;
-    }
-
-    function submissionIsLast(word: string) {
-        return submissionIsValid(word) && boardState.currentRow >= numTries - 1;
-    }
+    const currentRow = useGameStateStore.use.currentRow();
+    const currentWords = useGameStateStore.use.currentWords();
+    const currentString = useGameStateStore.use.currentString();
+    const gameFinished = useGameStateStore.use.gameFinished();
+    const keyButtonStatuses = useGameStateStore.use.keyButtonStatuses();
+    const incrementRow = useGameStateStore.use.incrementRow();
+    const addLetter = useGameStateStore.use.addLetter();
+    const removeLetter = useGameStateStore.use.removeLetter();
+    const setWinState = useGameStateStore.use.setWinState();
+    const setLossState = useGameStateStore.use.setLossState();
 
     function generateNewKeyButtonStatuses() {
-        const {
-            currentString,
-            keyButtonStatuses
-        } = boardState;
 
         const newStatuses = new Map(keyButtonStatuses);
 
@@ -77,95 +53,30 @@ const GameBoard: React.FC = () => {
     }
 
     function handleLetterPress(e: KeyboardEvent) {
-        const {
-            currentRow,
-            currentString,
-            currentWords,
-            keyButtonStatuses
-        } = boardState;
-
-        if (currentString.length < 5) {
-            const newString: string = currentString + e.key;
-            const newWords: Array<string> = [...currentWords];
-            newWords[currentRow] = newString;
-
-            const newBoardState: GameBoardState = {
-                currentRow,
-                currentString: newString,
-                currentWords: newWords,
-                gameFinished: false,
-                keyButtonStatuses
-            }
-
-            setBoardState(newBoardState)
-        }
+        addLetter(e.key);
     }
 
     function handleBackspace() {
-        const {
-            currentRow,
-            currentString,
-            currentWords,
-            keyButtonStatuses
-        } = boardState;
-
-        const newString: string = currentString.slice(0, currentString.length - 1);
-
-        const newWords: Array<string> = [...currentWords];
-        newWords[currentRow] = newString;
-
-        const newBoardState: GameBoardState = {
-            currentRow,
-            currentString: newString,
-            currentWords: newWords,
-            gameFinished: false,
-            keyButtonStatuses
-        }
-
-        setBoardState(newBoardState);
+        removeLetter();
     }
 
     function handleEnterPress() {
-        const {
-            currentRow,
-            currentString,
-            currentWords,
-        } = boardState;
-
-        // CH
-
-        if (submissionIsCorrect(currentString.toUpperCase())) {
+        if (submissionIsCorrect(currentString.toUpperCase(), answer.toUpperCase())) {
             const newKeyButtonStatuses = generateNewKeyButtonStatuses();
-
-            setBoardState({
-                currentRow: currentRow + 1,
-                currentString: "",
-                currentWords,
-                keyButtonStatuses: newKeyButtonStatuses,
-                gameFinished: true
-            });
+            
+            setWinState(newKeyButtonStatuses);
+            
             alert(`You won! The solution was ${answer}`)
-        } else if (submissionIsLast(currentString.toUpperCase())) {
+        } else if (submissionIsLast(currentString.toUpperCase(), answer.toUpperCase())) {
             const newKeyButtonStatuses = generateNewKeyButtonStatuses();
 
-            setBoardState({
-                currentRow: currentRow + 1,
-                currentString: "",
-                currentWords,
-                gameFinished: true,
-                keyButtonStatuses: newKeyButtonStatuses
-            });
+            setLossState(newKeyButtonStatuses);
+            
             alert(`You lost. The solution was ${answer}`)
-        } else if (submissionIsValid(currentString)) {
+        } else if (submissionIsValid(currentString.toUpperCase(), answer.toUpperCase())) {
             const newKeyButtonStatuses = generateNewKeyButtonStatuses();
 
-            setBoardState({
-                currentRow: currentRow + 1,
-                currentString: "",
-                currentWords,
-                gameFinished: false,
-                keyButtonStatuses: newKeyButtonStatuses
-            });
+            incrementRow(newKeyButtonStatuses);
         } else if (currentString.length === 5) {
             alert(`${currentString} is not a word.`)
         }
@@ -182,7 +93,7 @@ const GameBoard: React.FC = () => {
             }
         }
 
-        if (!boardState.gameFinished)
+        if (!gameFinished)
             document.addEventListener('keydown', handleKeyDown)
 
         return function cleanup() {
@@ -190,9 +101,9 @@ const GameBoard: React.FC = () => {
         }
     })
 
-    const gameRows = boardState.currentWords.map((word, i) => <GameRow
+    const gameRows = currentWords.map((word, i) => <GameRow
         key={`${i}`}
-        checked={i < boardState.currentRow}
+        checked={i < currentRow}
         word={word.toUpperCase()}
     />)
 
@@ -203,7 +114,7 @@ const GameBoard: React.FC = () => {
             >
                 {gameRows}
             </div>
-            <Keyboard keyStatuses={boardState.keyButtonStatuses} />
+            <Keyboard keyStatuses={keyButtonStatuses} />
         </div>
     )
 }
